@@ -7,8 +7,22 @@ html
 		link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
 		link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
 		link(rel='stylesheet', href='//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
-
 		link(rel='stylesheet', href='/stylesheets/AdminLTE.min.css')
 		link(rel='stylesheet', href='/stylesheets/skins/skin-blue.min.css')
-	body
-		block content
+
+	body.skin-blue.sidebar-mini
+		.wrapper
+			header.main-header
+				a.logo(href="index2.html")
+					span.logo-mini
+						b  A
+						| LT
+					span.logo-lg
+						b Admin
+						| LTE
+
+			block content
+
+		script(src='/plugins/jQuery/jQuery-2.1.4.min.js')
+		script(src='/javascripts/bootstrap.min.js')
+		script(src='/javascripts/app.min.js')
