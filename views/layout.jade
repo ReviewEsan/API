@@ -1,23 +1,29 @@
 doctype 5
 html
 	head
-		title= title
+		title= data.title
 		meta(content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name='viewport')
-		link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-		link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
-		link(rel='stylesheet', href='//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
+		link(rel='stylesheet', href='//ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/css/bootstrap.min.css', )
+		link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css')
 		link(rel='stylesheet', href='/stylesheets/AdminLTE.min.css')
 		link(rel='stylesheet', href='/stylesheets/skins/skin-blue.min.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
 
-	body.skin-blue.sidebar-mini
+	if data.screen != 'login'
+		body.skin-blue.sidebar-mini
+
+		input#shop(type="hidden", value="#{data.shop}")
+		input#apiKey(type="hidden", value="#{data.apiKey}")
+		input#apiUrl(type="hidden", value="#{data.apiUrl}")
+
 		.wrapper
 			header.main-header
 				a.logo(href="index2.html")
 					span.logo-mini
-						b  API
+						b  PDD
 					span.logo-lg
-						b Review Esan
-						|  API
+						b PowerDD  
+						| Backend
 				
 				nav.navbar.navbar-static-top(role="navigation")
 					a.sidebar-toggle(href="#", data-toggle="offcanvas", role="button")
@@ -26,40 +32,44 @@ html
 					div.navbar-custom-menu
 						ul.nav.navbar-nav
 
+							li.dropdown
+								a.dropdown-toggle(href="#", data-toggle="dropdown")
+									span
+										|  #{__('Language')}
+									span.caret
+								ul.dropdown-menu(role="menu")
+									li(class=(data.memberInfo.Locale.substr(0,2) == 'th' ? 'active' : ''))
+										a(href="javascript:void(0)") ภาษาไทย
+									li(class=(data.memberInfo.Locale.substr(0,2) == 'en' ? 'active' : ''))
+										a(href="javascript:void(0)") English
+
 							li.dropdown.user.user-menu
 								a.dropdown-toggle(href="#", data-toggle="dropdown")
-									img.user-image(src="/images/avatar5.png", alt="User Image")
-									span.hidden-xs  Alexander Pierce
+									img.user-image(src=(typeof data.memberInfo.Image != 'undefined' ? data.memberInfo.Image : "/images/avatar5.png"), alt="User Image")
+									span.hidden-xs  #{data.memberInfo.DisplayName}
 								ul.dropdown-menu
 									li.user-header
-										img.img-circle(src="/images/avatar5.png", alt="User Image")
+										img.img-circle(src=(typeof data.memberInfo.Image != 'undefined' ? data.memberInfo.Image : "/images/avatar5.png"), alt="User Image")
 										p
-											| Alexander Pierce - Web Developer
-											small Member since Nov. 2012
-									li.user-body
-										div.col-xs-4.text-center
-											a(href="#") Followers
-										div.col-xs-4.text-center
-											a(href="#") Sales
-										div.col-xs-4.text-center
-											a(href="#") Friends
+											| #{data.memberInfo.DisplayName} - #{__('Member Type - '+data.memberInfo.SelectedMemberType)}
+											small #{__('Member since')} #{data.memberInfo.RegisterDate}
 									li.user-footer
 										div.pull-left
-											a.btn.btn-default.btn-flat(href="#") Profile
+											a.btn.btn-default.btn-flat(href="#") #{__('Profile')}
 										div.pull-right
-											a.btn.btn-default.btn-flat(href="#") Sign out
+											a.btn-logout.btn.btn-default.btn-flat(href="javascript:void(0)") #{__('Sign out')}
 
 			aside.main-sidebar
 				section.sidebar
 					div.user-panel
 						div.pull-left.image
-							img.img-circle(src="/images/user2-160x160.jpg", alt="User Image")
+							img.img-circle(src=(typeof data.memberInfo.Image != 'undefined' ? data.memberInfo.Image : "/images/avatar5.png"), alt="User Image")
 						div.pull-left.info
 							p
-								| Alexander Pierce
+								| #{data.memberInfo.DisplayName}
 							a(href="#")
-								i.fa.fa-circle.text-success
-								| Online
+								i.fa.fa-user.text-success
+								| #{__('Member Type - '+data.memberInfo.SelectedMemberType)}
 
 					form.sidebar-form(action="#", method="get")
 						div.input-group
@@ -69,41 +79,98 @@ html
 									i.fa.fa-search
 
 					ul.sidebar-menu
-						li.header  HEADER
-						li.active
+						li.header  #{__('Shop')}
+						li(class=(data.screen === 'member' || data.screen === 'dealer' || data.screen === 'teamwork' ? 'treeview active' : 'treeview'))
 							a(href="#")
-								i.fa.fa-heart
-								span  Link
-						li.treeview
-							a(href="#")
-								i.fa.fa-link
-								span  Multilevel
+								i(class=(data.screen === 'member' || data.screen === 'dealer' || data.screen === 'teamwork' ? 'fa fa-user text-aqua' : 'fa fa-user'))
+								span  #{__('Member')}
 								i.fa.fa-angle-left.pull-right
 							ul.treeview-menu
-								li
-									a(href="#") Link in level 2
-								li
-									a(href="#") Link in level 2
+								li(class=(data.screen === 'member' ? 'active' : ''))
+									a(href="./member")
+										i(class=(data.screen === 'member' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Member')}
+								li(class=(data.screen === 'dealer' ? 'active' : ''))
+									a(href="./dealer")
+										i(class=(data.screen === 'dealer' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Dealer')}
+								li(class=(data.screen === 'teamwork' ? 'active' : ''))
+									a(href="./teamwork")
+										i(class=(data.screen === 'teamwork' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Teamwork')}
+
+						li(class=(data.screen === 'product' || data.screen === 'category' || data.screen === 'brand' ? 'treeview active' : 'treeview'))
+							a(href="#")
+								i(class=(data.screen === 'product' || data.screen === 'category' || data.screen === 'brand' ? 'fa fa-cubes text-aqua' : 'fa fa-cubes'))
+								span  #{__('Product')}
+								i.fa.fa-angle-left.pull-right
+							ul.treeview-menu
+								li(class=(data.screen === 'product' ? 'active' : ''))
+									a(href="./product")
+										i(class=(data.screen === 'product' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Product')}
+								li(class=(data.screen === 'category' ? 'active' : ''))
+									a(href="./category")
+										i(class=(data.screen === 'category' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Category')}
+								li(class=(data.screen === 'brand' ? 'active' : ''))
+									a(href="./brand")
+										i(class=(data.screen === 'brand' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Brand')}
+
+						li(class=(data.screen === 'cart' ? 'treeview active' : 'treeview'))
+							a(href="#")
+								i(class=(data.screen === 'cart' || data.screen === 'order' ? 'fa fa-shopping-cart text-aqua' : 'fa fa-shopping-cart'))
+								span  #{__('Order')}
+								i.fa.fa-angle-left.pull-right
+							ul.treeview-menu
+								li(class=(data.screen === 'cart' ? 'active' : ''))
+									a(href="./cart")
+										i(class=(data.screen === 'cart' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Cart')}
+								li(class=(data.screen === 'order' ? 'active' : ''))
+									a(href="./order")
+										i(class=(data.screen === 'order' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Order')}
+
+						li(class=(data.screen === 'shop' || data.screen === 'shop-config' ? 'treeview active' : 'treeview'))
+							a(href="#")
+								i(class=(data.screen === 'shop' || data.screen === 'shop-config' ? 'fa fa-home text-aqua' : 'fa fa-home'))
+								span  #{__('Shop')}
+								i.fa.fa-angle-left.pull-right
+							ul.treeview-menu
+								li(class=(data.screen === 'shop' ? 'active' : ''))
+									a(href="./shop")
+										i(class=(data.screen === 'shop' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Shop')}
+
+								li(class=(data.screen === 'shop-config' ? 'active' : ''))
+									a(href="./shop-config")
+										i(class=(data.screen === 'shop-config' ? 'fa fa-circle-o text-yellow' : 'fa fa-circle-o'))
+										|  #{__('Configuration')}
 
 			div.content-wrapper
 				section.content-header
-					h1  Page Header
-						small  Optional description
-					ol.breadcrumb
-						li
-							a(href="#")
-								i.fa.fa-dashboard
-								|  Level
-						li.active  Here
+					h1 #{__('Screen Title - '+data.screen)}
+						small= data.titleDescription
 				section.content
 					block content
 
 			footer.main-footer
-				div.pull-right.hidden-xs  Anything you want
+				div.pull-right.hidden-xs  Version  
+					b 2.0
 				strong  Copyright &copy; 2015 
-					a(href="#") Company
+					a(href="http://www.PowerDD.com") PowerDD
 				|  All rights reserved.
 
-		script(src='/plugins/jQuery/jQuery-2.1.4.min.js')
-		script(src='/javascripts/bootstrap.min.js')
+		script(src='//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js')
+		script(src='//ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
+		script(src='//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js')
 		script(src='/javascripts/app.min.js')
+		script(src='/javascripts/common.js')
+		if (data.script != '')
+			script(src='#{data.script}')
+
+	else
+		block content
+	

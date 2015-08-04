@@ -1,0 +1,122 @@
+extends layout
+
+block content
+	.row
+		.col-md-4
+			.box.box-primary
+				.box-header.with-border
+					h3.box-title 
+						i.fa.fa-clock-o
+						|  #{__('Expiration Time')}
+				.box-body
+					form(role="form")
+
+						.form-group
+							label #{__('Cart Expired')}
+							.input-group
+								input.form-control.txt-input.numeric-only(type='text', data-name="CartExpire", data-value=data.config.CartExpire.Value, data-option-old=data.config.CartExpire.Type, data-option=data.config.CartExpire.Type)
+								.input-group-btn
+									button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+										span.message #{__('Hours')} 
+										span.fa.fa-caret-down
+									ul.dropdown-menu
+										li(class=data.config.CartExpire.Type == 'H' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='H') #{__('Hours')}
+										li(class=data.config.CartExpire.Type == 'D' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='D') #{__('Days')}
+
+						.form-group
+							label #{__('Order Expired')}
+							.input-group
+								input.form-control.txt-input.numeric-only(type='text', data-name="OrderExpire", data-value=data.config.OrderExpire.Value, data-option-old=data.config.OrderExpire.Type, data-option=data.config.OrderExpire.Type)
+								.input-group-btn
+									button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+										span.message #{__('Hours')} 
+										span.fa.fa-caret-down
+									ul.dropdown-menu
+										li(class=data.config.OrderExpire.Type == 'H' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='H') #{__('Hours')}
+										li(class=data.config.OrderExpire.Type == 'D' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='D') #{__('Days')}
+
+						.form-group
+							label #{__('Login Expired (Normal)')}
+							.input-group
+								input.form-control.txt-input.numeric-only(type='text', data-name="LoginExpire", data-value=data.config.LoginExpire.Value, data-option-old=data.config.LoginExpire.Type, data-option=data.config.LoginExpire.Type)
+								.input-group-btn
+									button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+										span.message #{__('Hours')} 
+										span.fa.fa-caret-down
+									ul.dropdown-menu
+										li(class=data.config.LoginExpire.Type == 'H' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='H') #{__('Hours')}
+										li(class=data.config.LoginExpire.Type == 'D' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='D') #{__('Days')}
+
+						.form-group
+							label #{__('Login Expired (Remember)')}
+							.input-group
+								input.form-control.txt-input.numeric-only(type='text', data-name="LoginRememberExpire", data-value=data.config.LoginRememberExpire.Value, data-option-old=data.config.LoginRememberExpire.Type, data-option=data.config.LoginRememberExpire.Type)
+								.input-group-btn
+									button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+										span.message #{__('Hours')} 
+										span.fa.fa-caret-down
+									ul.dropdown-menu
+										li(class=data.config.LoginRememberExpire.Type == 'H' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='H') #{__('Hours')}
+										li(class=data.config.LoginRememberExpire.Type == 'D' ? 'active' : '')
+											a.option(href='javascript:void(0)', data-value='D') #{__('Days')}
+
+				.box-footer
+					span.btn.btn-primary.pull-right.btn-save
+						i.fa.fa-save
+						|  #{__('Save Data')}
+
+
+
+		.col-md-4
+			.box.box-primary
+				.box-header.with-border
+					h3.box-title 
+						i.fa.fa-truck
+						|  #{__('Shipping Cost')}
+				.box-body
+					form(role="form")
+
+						.form-group
+							.radio
+								label
+									input(type='radio', name='hasFees', value='0')
+									|  #{__('Free Shipping')}
+						.form-group
+							.radio
+								label
+									input(type='radio', name='hasFees', value='1')
+									|  #{__('Has Shipping Cost')}
+
+						.dotted-line
+
+						.form-group.padding-left-15
+							.radio
+								label
+									input(type='radio', name='feesType', value='F', checked)
+									|  #{__('Fixed Cost')}
+
+						.form-group.padding-left-15
+							.input-group
+								input.form-control.txt-input.numeric-only(type='text')
+								.input-group-btn
+									button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+										span.message #{__('Per Order')} 
+										span.fa.fa-caret-down
+									ul.dropdown-menu
+										li.active
+											a.option(href='javascript:void(0)', data-value='P') #{__('Per Piece')}
+										li
+											a.option(href='javascript:void(0)', data-value='O') #{__('Per Order')}
+						.form-group.padding-left-15
+							.radio
+								label
+									input(type='radio', name='feesType', value='W', disabled)
+									|  #{__('Weight Calculation')}
+							
